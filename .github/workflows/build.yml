@@ -1,4 +1,4 @@
-name: Release Workflow
+name: ${{ github.ref }}
 
 on:
   release:
@@ -29,50 +29,8 @@ jobs:
         Compress-Archive -Path ./CSVToQuery/bin/Release/net7.0-windows -DestinationPath CSVToQuery_Build.zip
       if: success()
 
-    - name: Remove Existing Archives
-      run: |
-        Remove-Item -Path *.zip, *.tar.gz -Force -ErrorAction SilentlyContinue
-      if: always()
-
     - name: Publish Release Artifact
       uses: actions/upload-artifact@v2
       with:
         name: WinForms-Release
-        path: CSVToQuery_Build.zip
-
-  publish:
-    name: Publish Release to GitHub
-    needs: build
-    runs-on: ubuntu-latest
-
-    steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
-
-    - name: Download Release Artifact
-      uses: actions/download-artifact@v2
-      with:
-        name: WinForms-Release
-        path: ./
-
-    - name: Create Release
-      id: create_release
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
-      with:
-        tag_name: ${{ github.ref }}
-        release_name: Release ${{ github.ref }}
-        draft: false
-        prerelease: false
-
-    - name: Upload Release Asset
-      id: upload-release-asset
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./CSVToQuery_Build.zip
-        asset_name: CSVToQuery_Build.zip
-        asset_content_type: application/zip
+      
