@@ -158,7 +158,7 @@ namespace CSVToQuery
 
                     //sanitize the column value
                     columnValue = columnValue.Replace("'", "");
-                     
+                     //test
                     int n;
                     bool isNumeric = int.TryParse(columnValue, out n);
                     if (isNumeric)
