@@ -1,4 +1,4 @@
-name: ${{ github.event.release.tag_name }} Workflow
+name: Release Workflow
 
 on:
   release:
@@ -32,7 +32,7 @@ jobs:
     - name: Publish Release Artifact
       uses: actions/upload-artifact@v2
       with:
-        name: WinForms-${{ github.event.release.tag_name }}-Release
+        name: WinForms-Release
         path: CSVToQuery_Build.zip
 
   publish:
@@ -47,7 +47,7 @@ jobs:
     - name: Download Release Artifact
       uses: actions/download-artifact@v2
       with:
-        name: WinForms-${{ github.event.release.tag_name }}-Release
+        name: WinForms-Release
         path: ./
 
     - name: Create Release
