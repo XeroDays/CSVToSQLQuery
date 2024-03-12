@@ -24,11 +24,18 @@ jobs:
     - name: Build
       run: dotnet build --configuration Release
 
+    - name: Create Zip Archive
+      run: |
+        mkdir -p ./build
+        cp -r ./CSVToQuery/bin/Release/net7.0-windows/* ./build/
+        zip -r CSVToQuery_Build.zip ./build/
+      if: success()
+
     - name: Publish Release Artifact
       uses: actions/upload-artifact@v2
       with:
         name: WinForms-Release
-        path: ./CSVToQuery/bin/Release/net7.0-windows/  # Update the path to match your project structure
+        path: CSVToQuery_Build.zip
 
   publish:
     name: Publish Release to GitHub
@@ -43,7 +50,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: WinForms-Release
-        path: ./CSVToQuery/bin/Release/net7.0-windows/  # Update the path to match your project structure
+        path: ./
 
     - name: Create Release
       id: create_release
@@ -63,6 +70,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./CSVToQuery/bin/Release/net7.0-windows/CSVToQuery.exe
-        asset_name: CSVToQuery.exe
-        asset_content_type: application/octet-stream
+        asset_path: ./CSVToQuery_Build.zip
+        asset_name: CSVToQuery_Build.zip
+        asset_content_type: application/zip
