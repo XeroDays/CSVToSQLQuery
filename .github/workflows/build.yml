@@ -51,7 +51,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
       with:
-        tag_name: ${{ github.ref }}
+        tag_name: ${{ github.ref }}-$(date '+%Y%m%d%H%M%S')  # Append a timestamp to the tag name
         release_name: Release ${{ github.ref }}
         draft: false
         prerelease: false
