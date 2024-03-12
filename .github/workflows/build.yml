@@ -21,4 +21,4 @@ jobs:
       run: nuget restore CSVToQuery.sln
       
     - name: Build solution
-      run: '"C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\MSBuild.exe" /p:Configuration=Release CSVToQuery.sln'
+      run: '"C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Enterprise\\MSBuild\\Current\\Bin\\MSBuild.exe" /p:Configuration=Release CSVToQuery.sln'
