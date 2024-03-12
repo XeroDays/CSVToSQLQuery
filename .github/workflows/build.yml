@@ -33,7 +33,10 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: WinForms-Release
-        path: CSVToQuery_Build.zip
+        path: |
+          CSVToQuery_Build.zip
+          !**/*.zip
+          !**/*.tar.gz
 
   publish:
     name: Publish Release to GitHub
@@ -68,11 +71,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./CSVToQuery_Build.zip
+        asset_path: ./
         asset_name: CSVToQuery_Build.zip
         asset_content_type: application/zip
-
-    - name: Remove Source Code from Release
-      run: |
-        rm -rf src  # Remove the source code directory from the release asset
-      working-directory: ${{ github.workspace }}
