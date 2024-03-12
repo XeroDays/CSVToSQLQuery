@@ -1,5 +1,3 @@
-name: Release Workflow
-
 on:
   release:
     types: [created]
@@ -38,15 +36,6 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
-
-    - name: Delete Existing Release
-      if: github.event_name == 'release' && github.event.action == 'created'  # Run only when a new release is created
-      run: |
-        tag_name=${GITHUB_REF#refs/tags/}
-        release_id=$(curl -s -X GET -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/repos/${{ github.repository }}/releases/tags/$tag_name" | jq -r '.id')
-        if [ "$release_id" != "null" ]; then
-          curl -X DELETE -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/repos/${{ github.repository }}/releases/$release_id"
-        fi
 
     - name: Download Release Artifact
       uses: actions/download-artifact@v2
