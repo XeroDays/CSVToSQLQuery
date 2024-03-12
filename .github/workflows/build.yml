@@ -1,12 +1,12 @@
-name: Build on commit to main
+name: Build and Auto-Release on Tagged Release
 
 on:
   push:
-    branches:
-      - main
+    tags:
+      - '*'
 
 jobs:
-  build:
+  build-and-release:
     runs-on: windows-latest
     steps:
     - name: Checkout code
@@ -18,7 +18,28 @@ jobs:
         dotnet-version: '7.0' # Adjust to your desired .NET Framework version
       
     - name: Restore dependencies
-      run: nuget restore CSVToQuery.sln
+      run: dotnet restore CSVToQuery.sln
       
     - name: Build solution
-      run: '"C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Enterprise\\MSBuild\\Current\\Bin\\MSBuild.exe" /p:Configuration=Release CSVToQuery.sln'
+      run: dotnet build CSVToQuery.sln --configuration Release
+
+    - name: Get release information
+      id: get_release_info
+      run: |
+        echo "::set-output name=tag_name::${GITHUB_REF/refs\/tags\//}"
+        echo "::set-output name=release_name::${GITHUB_EVENT_NAME}"
+      shell: bash
+
+    - name: Create build artifact
+      run: |
+        mkdir -p release
+        cp CSVToQuery/bin/Release/*.exe release/
+
+    - name: Upload build artifacts
+      run: |
+        cd release
+        for file in *.exe; do
+          echo "Uploading $file"
+          upload_url="https://uploads.github.com/repos/${{ github.repository }}/releases/${{ github.event.release.id }}/assets?name=${file}"
+          curl -X POST -u "username:${{ secrets.GITHUB_TOKEN }}" -H "Accept: application/vnd.github.v3+json" -H "Content-Type: application/octet-stream" --data-binary @"$file" "$upload_url"
+        done
