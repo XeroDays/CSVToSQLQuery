@@ -29,6 +29,11 @@ jobs:
         Compress-Archive -Path ./CSVToQuery/bin/Release/net7.0-windows -DestinationPath CSVToQuery_Build.zip
       if: success()
 
+    - name: Remove Existing Archives
+      run: |
+        Remove-Item -Path *.zip, *.tar.gz -Force -ErrorAction SilentlyContinue
+      if: always()
+
     - name: Publish Release Artifact
       uses: actions/upload-artifact@v2
       with:
