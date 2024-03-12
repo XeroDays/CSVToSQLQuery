@@ -61,6 +61,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./CSVToQuery/bin/Release/CSVToSQLQuery.exe
-        asset_name: CSVToSQLQuery.exe
+        asset_path: ./CSVToQuery/bin/Release/CSVToQuery.exe
+        asset_name: CSVToQuery.exe
         asset_content_type: application/octet-stream
