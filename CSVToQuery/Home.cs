@@ -158,8 +158,7 @@ namespace CSVToQuery
 
                     //sanitize the column value
                     columnValue = columnValue.Replace("'", "");
-
-
+                     
                     int n;
                     bool isNumeric = int.TryParse(columnValue, out n);
                     if (isNumeric)
@@ -168,7 +167,16 @@ namespace CSVToQuery
                     }
                     else
                     {
-                        sb.Append("'" + columnValue + "',");
+                        //check if the value is true or false
+                        if (columnValue.ToLower() == "true" || columnValue.ToLower() == "false")
+                        {
+                            sb.Append((columnValue.ToLower()=="true"?"1":"0") + ",");
+                        }
+                        else
+                        {
+                            sb.Append("'" + columnValue + "',");
+                        } 
+                       
                     }
                 }
                 sb.Remove(sb.Length - 1, 1);
