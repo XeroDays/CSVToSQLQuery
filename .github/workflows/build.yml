@@ -1,3 +1,5 @@
+name: Release Workflow
+
 on:
   release:
     types: [created]
@@ -26,7 +28,7 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: WinForms-Release
-        path: ./CSVToQuery/bin/Release/  # Update the path to match your project structure
+        path: ./CSVToQuery/bin/Release/net7.0-windows/  # Update the path to match your project structure
 
   publish:
     name: Publish Release to GitHub
@@ -41,7 +43,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: WinForms-Release
-        path: ./CSVToQuery/bin/Release/  # Update the path to match your project structure
+        path: ./CSVToQuery/bin/Release/net7.0-windows/  # Update the path to match your project structure
 
     - name: Create Release
       id: create_release
@@ -61,6 +63,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./CSVToQuery/bin/Release/CSVToQuery.exe
+        asset_path: ./CSVToQuery/bin/Release/net7.0-windows/CSVToQuery.exe
         asset_name: CSVToQuery.exe
         asset_content_type: application/octet-stream
