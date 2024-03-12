@@ -71,3 +71,7 @@ jobs:
         asset_path: ./CSVToQuery_Build.zip
         asset_name: CSVToQuery_Build.zip
         asset_content_type: application/zip
+  - name: Remove Source Code from Release
+      run: |
+        rm -rf src  # Remove the source code directory from the release asset
+      working-directory: ${{ github.workspace }}
