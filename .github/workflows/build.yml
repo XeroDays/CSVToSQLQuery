@@ -33,10 +33,7 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: WinForms-Release
-        path: |
-          CSVToQuery_Build.zip
-          !**/*.zip
-          !**/*.tar.gz
+        path: CSVToQuery_Build.zip
 
   publish:
     name: Publish Release to GitHub
@@ -71,6 +68,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./
+        asset_path: ./CSVToQuery_Build.zip
         asset_name: CSVToQuery_Build.zip
         asset_content_type: application/zip
