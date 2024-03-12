@@ -18,7 +18,7 @@ jobs:
         dotnet-version: '7.0.x' # Adjust to your desired .NET Framework version
       
     - name: Restore dependencies
-      run: nuget restore YourSolution.sln
+      run: nuget restore CSVToQuery.sln
       
     - name: Build solution
-      run: msbuild /p:Configuration=Release YourSolution.sln
+      run: msbuild /p:Configuration=Release CSVToQuery.sln
