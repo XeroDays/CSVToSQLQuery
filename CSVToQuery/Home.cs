@@ -37,7 +37,7 @@ namespace CSVToQuery
 
         private void btnStart_Click(object sender, EventArgs e)
         {
-             
+            List<string> linesIgnores = new List<string>();
 
             //read all the text from the file
             string[] lines = System.IO.File.ReadAllLines(txtFilePath.Text);
@@ -54,8 +54,7 @@ namespace CSVToQuery
             {
                 dt.Columns.Add(header);
                 sb.Append(header);
-                sb.Append(",");
-
+                sb.Append(","); 
             }
              
 
@@ -96,14 +95,28 @@ namespace CSVToQuery
                 sb2.Remove(sb2.Length - 1, 1);
                 //append the string builder to the string builder 
 
+                //if parts are greatet than columns then ignore the rest
+                if (parts.Length > headers.Length)
+                {
+                    linesIgnores.Add(line);   
+                    //remove last items from parts
+                    //int remove = parts.Length - headers.Length;
+                    // parts = parts.Take(parts.Length - remove).ToArray();
+                    continue;
+                }
+
                 //put the line in datagri
                 dt.Rows.Add(parts);
-                //datagrid checkbox should be seelcted
-
-               
+                //datagrid checkbox should be seelcted 
             }
-             
 
+
+            if(linesIgnores.Count>0)
+            {
+                MessageBox.Show("Error in Decoding, Total Lines Ignored : " + linesIgnores.Count + " / " + lines.Count(),"Error", buttons : MessageBoxButtons.OK,icon: MessageBoxIcon.Error);
+                string listOgIgnore = string.Join("\n", linesIgnores); 
+                MessageBox.Show("Following lines are ignore due to bad encoding:\n" + listOgIgnore);
+            } 
         }
 
         private void btnConvertTable_Click(object sender, EventArgs e)
