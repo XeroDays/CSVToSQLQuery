@@ -1,16 +1,16 @@
 
 # CSV to SQL Converter
-##Summary
+## Summary
 This program is created in pure C# which main purpose is to read csv format along with the headings and generate insert queries for SQL Database, where then you can use these queries in the mysql or sql server as you want. If the value is totally a number, then no quotes will be added to make it string by force else it will be treated as string. 
 
-##Features
+## Features
 1. Read in File
 2. Save to Datagrid
 3. Sanitize the values
 4. Export to CSV
 
 
-##Known Issues
+## Known Issues
 1. Boolean True False to 1 or 0 not fixed
 
 
